@@ -1,20 +1,3 @@
-<img src="https://r2cdn.perplexity.ai/pplx-full-logo-primary-dark%402x.png" style="height:64px;margin-right:32px"/>
-
-# explain to me what this project is about. Is it better if i make it in linux or windows. I was asked to make it in a language for which i have selected shell. I wish to do it in Linux terminal bash shell. But if its better to do it in windows powershell or command prompt even that works.
-
-Answer skipped.
-<span style="display:none">[^1_1]</span>
-
-<div align="center">⁂</div>
-
-[^1_1]: UE22CS243A-Python-Lex-Yacc-Tutorial-v2.pdf
-
-
----
-
-# explain to me what this project is about. Is it better if i make it in linux or windows. I was asked to make it in a language for which i have selected shell. I wish to do it in Linux terminal bash shell. But if its better to do it in windows powershell or command prompt even that works.
-
-Based on my analysis of the document and research, I can now provide you with a comprehensive explanation of what this project is about and platform recommendations.
 
 # Python Lex-Yacc (PLY) Compiler Project: Platform Analysis and Implementation Guide
 
