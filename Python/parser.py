@@ -1,4 +1,4 @@
-import ply.yacc as yacc
+import ply.yacc as yacc 
 from lexer import tokens
 
 start = 'input'
