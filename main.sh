@@ -3,26 +3,20 @@
 # Integrates lexer and parser functionality with user interface
 # Based on PLY main concepts but written in pure bash
 
-# Get the directory where this script is located
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-
-# Source the lexer and parser modules
 source "$SCRIPT_DIR/lexer.sh"
 source "$SCRIPT_DIR/parser.sh"
 
-# Program metadata
 PROGRAM_NAME="Bash Lex-Yacc Implementation"
 VERSION="1.0"
 AUTHOR="Shell Programming Project"
 
-# Color codes for output formatting
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 BLUE='\033[0;34m'
 YELLOW='\033[1;33m'
-NC='\033[0m' # No Color
+NC='\033[0m' 
 
-# Function to display program header
 show_header() {
     echo -e "${BLUE}=================================${NC}"
     echo -e "${BLUE}$PROGRAM_NAME${NC}"
@@ -31,7 +25,6 @@ show_header() {
     echo
 }
 
-# Function to display help information
 show_help() {
     echo -e "${YELLOW}Usage:${NC} $0 [OPTIONS]"
     echo
@@ -56,13 +49,11 @@ show_help() {
     echo "  $0 -t                   # Run test cases"
 }
 
-# Function to display version information
 show_version() {
     echo "$PROGRAM_NAME version $VERSION"
     echo "Bash implementation of lexical analysis and parsing"
 }
 
-# Function to get grammar type from user
 get_grammar_type() {
     echo -e "${YELLOW}Available Grammar Types:${NC}"
     echo "1. expression  - Arithmetic expressions (e.g., 3 + 4 * 2)"
@@ -93,7 +84,6 @@ get_grammar_type() {
     done
 }
 
-# Function to process a single input
 process_input() {
     local input="$1"
     local grammar_type="$2"
@@ -105,7 +95,6 @@ process_input() {
         echo
     fi
     
-    # Redirect stderr to /dev/null in quiet mode
     if [[ "$quiet_mode" == "true" ]]; then
         if parse_input "$input" "$grammar_type" 2>/dev/null; then
             echo -e "${GREEN}✓ ACCEPTED${NC}"
@@ -125,14 +114,12 @@ process_input() {
     fi
 }
 
-# Function to run interactive mode
 run_interactive() {
     local grammar_type="$1"
     local quiet_mode="$2"
     
     show_header
     
-    # Get grammar type if not specified
     if [[ -z "$grammar_type" ]]; then
         grammar_type=$(get_grammar_type)
     fi
@@ -174,7 +161,6 @@ run_interactive() {
                 echo -e "${GREEN}Interactive Mode - Using '$grammar_type' grammar${NC}"
                 ;;
             "")
-                # Empty input, do nothing
                 ;;
             *)
                 echo
@@ -185,7 +171,6 @@ run_interactive() {
     done
 }
 
-# Function to run test cases
 run_test_cases() {
     local quiet_mode="$1"
     
@@ -195,7 +180,6 @@ run_test_cases() {
     local total_tests=0
     local passed_tests=0
     
-    # Test cases for arithmetic expressions
     echo -e "${YELLOW}Testing Arithmetic Expressions:${NC}"
     declare -a expression_tests=(
         "3 + 4"
@@ -214,7 +198,6 @@ run_test_cases() {
     done
     echo
     
-    # Test cases for a^n b^n sequences
     echo -e "${YELLOW}Testing a^n b^n Sequences:${NC}"
     declare -a sequence_tests=(
         "ab"
@@ -232,7 +215,6 @@ run_test_cases() {
     done
     echo
     
-    # Test cases for variable declarations
     echo -e "${YELLOW}Testing Variable Declarations:${NC}"
     declare -a declaration_tests=(
         "int x;"
@@ -250,7 +232,6 @@ run_test_cases() {
     done
     echo
     
-    # Error test cases (should fail)
     echo -e "${YELLOW}Testing Error Cases (should fail):${NC}"
     declare -a error_tests=(
         "3 + + 4"
@@ -271,7 +252,6 @@ run_test_cases() {
     done
     echo
     
-    # Display results
     echo -e "${BLUE}Test Results:${NC}"
     echo -e "${GREEN}Passed: $passed_tests/$total_tests${NC}"
     
@@ -284,7 +264,6 @@ run_test_cases() {
     fi
 }
 
-# Function to run quick tests for current grammar
 run_quick_tests() {
     local grammar_type="$1"
     local quiet_mode="$2"
@@ -312,7 +291,6 @@ run_quick_tests() {
     echo
 }
 
-# Function to process file input
 process_file() {
     local filename="$1"
     local grammar_type="$2"
@@ -332,7 +310,6 @@ process_file() {
     local accepted_lines=0
     
     while IFS= read -r line; do
-        # Skip empty lines and comments
         if [[ -n "$line" && ! "$line" =~ ^[[:space:]]*# ]]; then
             ((total_lines++))
             echo -n "Line $line_number: "
@@ -350,7 +327,6 @@ process_file() {
     return 0
 }
 
-# Main function
 main() {
     local interactive_mode=true
     local grammar_type=""
@@ -358,7 +334,6 @@ main() {
     local run_tests=false
     local quiet_mode=false
     
-    # Parse command line arguments
     while [[ $# -gt 0 ]]; do
         case $1 in
             -h|--help)
@@ -399,11 +374,9 @@ main() {
         esac
     done
     
-    # Validate grammar type if specified
     if [[ -n "$grammar_type" ]]; then
         case "$grammar_type" in
             expression|arithmetic|sequence|anbn|declaration|variable)
-                # Valid grammar type
                 ;;
             *)
                 echo -e "${RED}Invalid grammar type: $grammar_type${NC}"
@@ -413,7 +386,6 @@ main() {
         esac
     fi
     
-    # Run appropriate mode
     if [[ "$run_tests" == true ]]; then
         run_test_cases "$quiet_mode"
     elif [[ -n "$filename" ]]; then
@@ -428,7 +400,7 @@ main() {
     fi
 }
 
-# Check if script is run directly
-if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
-    main "$@"
-fi
+## Check if script is run directly
+#if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
+#    main "$@"
+#fi

@@ -1,7 +1,6 @@
 #!/bin/bash
 # lexer.sh - Shell-based Lexical Analyzer
 # Implements tokenization using bash regular expressions and pattern matching
-# Based on PLY concepts but written in pure bash
 
 # Global variables for token processing
 declare -a TOKENS=()
@@ -9,7 +8,6 @@ declare -a TOKEN_VALUES=()
 INPUT_TEXT=""
 TOKEN_INDEX=0
 
-# Define token types (equivalent to PLY tokens list)
 TOKEN_TYPES=(
     "NUMBER"
     "PLUS" 
@@ -28,7 +26,6 @@ TOKEN_TYPES=(
     "B"
 )
 
-# Regular expression patterns for each token type
 declare -A TOKEN_PATTERNS=(
     ["NUMBER"]="^[0-9]+(\.[0-9]+)?"
     ["PLUS"]="^\+"
@@ -47,7 +44,6 @@ declare -A TOKEN_PATTERNS=(
     ["TYPE"]="^(int|char|float|double)"
 )
 
-# Reserved words (similar to PLY reserved dictionary)
 declare -A RESERVED_WORDS=(
     ["int"]="TYPE"
     ["char"]="TYPE" 
@@ -55,7 +51,6 @@ declare -A RESERVED_WORDS=(
     ["double"]="TYPE"
 )
 
-# Function to initialize lexer with input text
 initialize_lexer() {
     local input="$1"
     INPUT_TEXT="$input"
@@ -65,14 +60,12 @@ initialize_lexer() {
     echo "Lexer initialized with input: '$input'" >&2
 }
 
-# Function to skip whitespace
 skip_whitespace() {
     while [[ ${INPUT_TEXT:0:1} =~ [[:space:]] && ${INPUT_TEXT:0:1} != $'\n' ]]; do
         INPUT_TEXT="${INPUT_TEXT:1}"
     done
 }
 
-# Function to match a token pattern
 match_token() {
     local token_type="$1"
     local pattern="${TOKEN_PATTERNS[$token_type]}"
@@ -81,20 +74,16 @@ match_token() {
         return 1
     fi
     
-    # Use bash regex matching
     if [[ "$INPUT_TEXT" =~ $pattern ]]; then
         local match="${BASH_REMATCH[0]}"
-        
-        # Special handling for ID tokens (check if reserved word)
+        )
         if [[ "$token_type" == "ID" && -n "${RESERVED_WORDS[$match]}" ]]; then
             token_type="${RESERVED_WORDS[$match]}"
         fi
         
-        # Add token to arrays
         TOKENS+=("$token_type")
         TOKEN_VALUES+=("$match")
         
-        # Remove matched text from input
         INPUT_TEXT="${INPUT_TEXT:${#match}}"
         
         echo "Matched token: $token_type = '$match'" >&2
@@ -104,18 +93,14 @@ match_token() {
     return 1
 }
 
-# Function to get next token
 get_next_token() {
-    # Skip whitespace first
     skip_whitespace
     
-    # Check if we've reached end of input
     if [[ -z "$INPUT_TEXT" ]]; then
         echo "EOF"
         return 1
     fi
     
-    # Try to match each token type
     for token_type in "${TOKEN_TYPES[@]}"; do
         if match_token "$token_type"; then
             echo "$token_type"
@@ -125,7 +110,7 @@ get_next_token() {
     
     # If no token matched, it's an error
     echo "ERROR: Illegal character '${INPUT_TEXT:0:1}'" >&2
-    INPUT_TEXT="${INPUT_TEXT:1}"  # Skip the illegal character
+    INPUT_TEXT="${INPUT_TEXT:1}"  
     echo "ERROR"
     return 1
 }
@@ -160,7 +145,6 @@ tokenize_input() {
     return 0
 }
 
-# Function to get token at specific index (for parser)
 get_token_at_index() {
     local index="$1"
     if [[ $index -lt ${#TOKENS[@]} ]]; then
@@ -172,7 +156,6 @@ get_token_at_index() {
     fi
 }
 
-# Function to get token value at specific index
 get_token_value_at_index() {
     local index="$1"
     if [[ $index -lt ${#TOKEN_VALUES[@]} ]]; then
@@ -184,19 +167,16 @@ get_token_value_at_index() {
     fi
 }
 
-# Function to get current token count
 get_token_count() {
     echo "${#TOKENS[@]}"
 }
 
-# Error handling function
 lexer_error() {
     local char="$1"
     echo "Lexical error: Illegal character '$char'" >&2
     return 1
 }
 
-# Export functions for use by other scripts
 export -f initialize_lexer
 export -f get_next_token
 export -f tokenize_input
@@ -205,26 +185,26 @@ export -f get_token_value_at_index
 export -f get_token_count
 
 # If script is run directly, demonstrate lexer functionality
-if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
-    echo "=== BASH LEXER DEMONSTRATION ==="
-    
-    # Test case 1: Simple arithmetic expression
-    echo "Test 1: Arithmetic Expression"
-    tokenize_input "3 + 4 * (2 - 1)"
-    echo
-    
-    # Test case 2: Variable declaration (C-style)
-    echo "Test 2: Variable Declaration"
-    tokenize_input "int x = 5;"
-    echo
-    
-    # Test case 3: a^n b^n language
-    echo "Test 3: a^n b^n Language"
-    tokenize_input "aaabbb"
-    echo
-    
-    # Test case 4: Error case
-    echo "Test 4: Error Case"
-    tokenize_input "abc & 123"
-    echo
-fi
+#if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
+#    echo "=== BASH LEXER DEMONSTRATION ==="
+#    
+#    # Test case 1: Simple arithmetic expression
+#    echo "Test 1: Arithmetic Expression"
+#    tokenize_input "3 + 4 * (2 - 1)"
+#    echo
+#    
+#    # Test case 2: Variable declaration (C-style)
+#    echo "Test 2: Variable Declaration"
+#    tokenize_input "int x = 5;"
+#    echo
+#    
+#    # Test case 3: a^n b^n language
+#    echo "Test 3: a^n b^n Language"
+#    tokenize_input "aaabbb"
+#    echo
+#    
+#    # Test case 4: Error case
+#    echo "Test 4: Error Case"
+#    tokenize_input "abc & 123"
+#    echo
+#fi
