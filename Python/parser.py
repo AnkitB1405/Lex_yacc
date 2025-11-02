@@ -1,19 +1,24 @@
 import ply.yacc as yacc
 from lexer import tokens
 
-def p_statement_list(p):
+def p_statements(p):
     '''statements : statement
                   | statements statement'''
     pass
 
 def p_statement(p):
-    '''statement : command
-                 | if_statement'''
+    '''statement : command SEMICOLON
+                 | if_statement
+                 | loop_statement
+                 | command'''
     pass
 
 def p_command(p):
-    '''command : ID argument_list optional_redirects
-               | ID optional_redirects'''
+    '''command : ID argument_list
+               | ID
+               | command PIPE command
+               | command REDIRECT_OUT ID
+               | command REDIRECT_IN ID'''
     pass
 
 def p_argument_list(p):
@@ -27,25 +32,17 @@ def p_argument(p):
                 | ID'''
     pass
 
-def p_optional_redirects(p):
-    '''optional_redirects : PIPE command
-                         | REDIRECT_OUT ID
-                         | REDIRECT_IN ID
-                         | SEMICOLON
-                         |'''
-    pass
-
 def p_if_statement(p):
-    '''if_statement : IF condition THEN statements optional_else FI'''
+    '''if_statement : IF condition THEN statements FI
+                   | IF condition THEN statements ELSE statements FI'''
     pass
 
 def p_condition(p):
     '''condition : command'''
     pass
 
-def p_optional_else(p):
-    '''optional_else : ELSE statements
-                     |'''
+def p_loop_statement(p):
+    '''loop_statement : FOR ID IN argument_list DO statements DONE'''
     pass
 
 def p_error(p):

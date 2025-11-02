@@ -1,9 +1,5 @@
 import ply.lex as lex
 
-tokens = [
-    'ID', 'NUMBER', 'EQUAL', 'PIPE', 'REDIRECT_OUT', 'REDIRECT_IN', 'SEMICOLON', 'STRING',
-]
-
 reserved = {
     'if': 'IF',
     'then': 'THEN',
@@ -13,8 +9,19 @@ reserved = {
     'do': 'DO',
     'done': 'DONE',
     'while': 'WHILE',
-    'in': 'IN',
+    'in': 'IN'
 }
+
+tokens = [
+    'ID',
+    'NUMBER',
+    'EQUAL',
+    'PIPE',
+    'REDIRECT_IN',
+    'REDIRECT_OUT',
+    'SEMICOLON',
+    'STRING'
+] + list(reserved.values())
 
 t_EQUAL        = r'='
 t_PIPE         = r'\|'
@@ -25,7 +32,7 @@ t_STRING       = r'\"([^"]*)\"|\'([^\']*)\''
 t_ignore       = ' \t'
 
 def t_ID(t):
-    r'[a-zA-Z_\./][a-zA-Z0-9_\./\-]*'
+    r'[a-zA-Z_][a-zA-Z0-9_]*'
     t.type = reserved.get(t.value, 'ID')
     return t
 
@@ -39,7 +46,7 @@ def t_newline(t):
     t.lexer.lineno += len(t.value)
 
 def t_error(t):
-    print(f"Illegal character: {t.value[0]}")
+    print(f'Illegal character: {t.value[0]}')
     t.lexer.skip(1)
 
 lexer = lex.lex()
