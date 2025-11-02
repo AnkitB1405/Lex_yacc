@@ -3,56 +3,754 @@ Created by PLY version 3.11 (http://www.dabeaz.com/ply)
 Unused terminals:
 
     EQUAL
+    WHILE
 
 Grammar
 
 Rule 0     S' -> statements
 Rule 1     statements -> statement
 Rule 2     statements -> statements statement
-Rule 3     statement -> command
+Rule 3     statement -> command SEMICOLON
 Rule 4     statement -> if_statement
-Rule 5     command -> ID argument_list optional_redirects
-Rule 6     command -> ID optional_redirects
-Rule 7     argument_list -> argument_list argument
-Rule 8     argument_list -> argument
-Rule 9     argument -> STRING
-Rule 10    argument -> NUMBER
-Rule 11    argument -> ID
-Rule 12    optional_redirects -> PIPE command
-Rule 13    optional_redirects -> REDIRECT_OUT ID
-Rule 14    optional_redirects -> REDIRECT_IN ID
-Rule 15    optional_redirects -> SEMICOLON
-Rule 16    optional_redirects -> <empty>
-Rule 17    if_statement -> IF condition THEN statements optional_else FI
-Rule 18    condition -> command
-Rule 19    optional_else -> ELSE statements
-Rule 20    optional_else -> <empty>
+Rule 5     statement -> loop_statement
+Rule 6     statement -> command
+Rule 7     command -> ID argument_list
+Rule 8     command -> ID
+Rule 9     command -> command PIPE command
+Rule 10    command -> command REDIRECT_OUT ID
+Rule 11    command -> command REDIRECT_IN ID
+Rule 12    argument_list -> argument_list argument
+Rule 13    argument_list -> argument
+Rule 14    argument -> STRING
+Rule 15    argument -> NUMBER
+Rule 16    argument -> ID
+Rule 17    if_statement -> IF condition THEN statements FI
+Rule 18    if_statement -> IF condition THEN statements ELSE statements FI
+Rule 19    condition -> command
+Rule 20    loop_statement -> FOR ID IN argument_list DO statements DONE
 
 Terminals, with rules where they appear
 
+DO                   : 20
+DONE                 : 20
+ELSE                 : 18
 EQUAL                : 
-ID                   : 5 6 11 13 14
-NUMBER               : 10
-PIPE                 : 12
-REDIRECT_IN          : 14
-REDIRECT_OUT         : 13
-SEMICOLON            : 15
-STRING               : 9
+FI                   : 17 18
+FOR                  : 20
+ID                   : 7 8 10 11 16 20
+IF                   : 17 18
+IN                   : 20
+NUMBER               : 15
+PIPE                 : 9
+REDIRECT_IN          : 11
+REDIRECT_OUT         : 10
+SEMICOLON            : 3
+STRING               : 14
+THEN                 : 17 18
+WHILE                : 
 error                : 
 
 Nonterminals, with rules where they appear
 
-ELSE                 : 19
-FI                   : 17
-IF                   : 17
-THEN                 : 17
-argument             : 7 8
-argument_list        : 5 7
-command              : 3 12 18
-condition            : 17
+argument             : 12 13
+argument_list        : 7 12 20
+command              : 3 6 9 9 10 11 19
+condition            : 17 18
 if_statement         : 4
-optional_else        : 17
-optional_redirects   : 5 6
+loop_statement       : 5
 statement            : 1 2
-statements           : 2 17 19 0
+statements           : 2 17 18 18 20 0
 
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . statements
+    (1) statements -> . statement
+    (2) statements -> . statements statement
+    (3) statement -> . command SEMICOLON
+    (4) statement -> . if_statement
+    (5) statement -> . loop_statement
+    (6) statement -> . command
+    (7) command -> . ID argument_list
+    (8) command -> . ID
+    (9) command -> . command PIPE command
+    (10) command -> . command REDIRECT_OUT ID
+    (11) command -> . command REDIRECT_IN ID
+    (17) if_statement -> . IF condition THEN statements FI
+    (18) if_statement -> . IF condition THEN statements ELSE statements FI
+    (20) loop_statement -> . FOR ID IN argument_list DO statements DONE
+
+    ID              shift and go to state 6
+    IF              shift and go to state 7
+    FOR             shift and go to state 8
+
+    statements                     shift and go to state 1
+    statement                      shift and go to state 2
+    command                        shift and go to state 3
+    if_statement                   shift and go to state 4
+    loop_statement                 shift and go to state 5
+
+state 1
+
+    (0) S' -> statements .
+    (2) statements -> statements . statement
+    (3) statement -> . command SEMICOLON
+    (4) statement -> . if_statement
+    (5) statement -> . loop_statement
+    (6) statement -> . command
+    (7) command -> . ID argument_list
+    (8) command -> . ID
+    (9) command -> . command PIPE command
+    (10) command -> . command REDIRECT_OUT ID
+    (11) command -> . command REDIRECT_IN ID
+    (17) if_statement -> . IF condition THEN statements FI
+    (18) if_statement -> . IF condition THEN statements ELSE statements FI
+    (20) loop_statement -> . FOR ID IN argument_list DO statements DONE
+
+    ID              shift and go to state 6
+    IF              shift and go to state 7
+    FOR             shift and go to state 8
+
+    statement                      shift and go to state 9
+    command                        shift and go to state 3
+    if_statement                   shift and go to state 4
+    loop_statement                 shift and go to state 5
+
+state 2
+
+    (1) statements -> statement .
+
+    ID              reduce using rule 1 (statements -> statement .)
+    IF              reduce using rule 1 (statements -> statement .)
+    FOR             reduce using rule 1 (statements -> statement .)
+    $end            reduce using rule 1 (statements -> statement .)
+    FI              reduce using rule 1 (statements -> statement .)
+    ELSE            reduce using rule 1 (statements -> statement .)
+    DONE            reduce using rule 1 (statements -> statement .)
+
+
+state 3
+
+    (3) statement -> command . SEMICOLON
+    (6) statement -> command .
+    (9) command -> command . PIPE command
+    (10) command -> command . REDIRECT_OUT ID
+    (11) command -> command . REDIRECT_IN ID
+
+    SEMICOLON       shift and go to state 10
+    ID              reduce using rule 6 (statement -> command .)
+    IF              reduce using rule 6 (statement -> command .)
+    FOR             reduce using rule 6 (statement -> command .)
+    $end            reduce using rule 6 (statement -> command .)
+    FI              reduce using rule 6 (statement -> command .)
+    ELSE            reduce using rule 6 (statement -> command .)
+    DONE            reduce using rule 6 (statement -> command .)
+    PIPE            shift and go to state 11
+    REDIRECT_OUT    shift and go to state 12
+    REDIRECT_IN     shift and go to state 13
+
+
+state 4
+
+    (4) statement -> if_statement .
+
+    ID              reduce using rule 4 (statement -> if_statement .)
+    IF              reduce using rule 4 (statement -> if_statement .)
+    FOR             reduce using rule 4 (statement -> if_statement .)
+    $end            reduce using rule 4 (statement -> if_statement .)
+    FI              reduce using rule 4 (statement -> if_statement .)
+    ELSE            reduce using rule 4 (statement -> if_statement .)
+    DONE            reduce using rule 4 (statement -> if_statement .)
+
+
+state 5
+
+    (5) statement -> loop_statement .
+
+    ID              reduce using rule 5 (statement -> loop_statement .)
+    IF              reduce using rule 5 (statement -> loop_statement .)
+    FOR             reduce using rule 5 (statement -> loop_statement .)
+    $end            reduce using rule 5 (statement -> loop_statement .)
+    FI              reduce using rule 5 (statement -> loop_statement .)
+    ELSE            reduce using rule 5 (statement -> loop_statement .)
+    DONE            reduce using rule 5 (statement -> loop_statement .)
+
+
+state 6
+
+    (7) command -> ID . argument_list
+    (8) command -> ID .
+    (12) argument_list -> . argument_list argument
+    (13) argument_list -> . argument
+    (14) argument -> . STRING
+    (15) argument -> . NUMBER
+    (16) argument -> . ID
+
+  ! shift/reduce conflict for ID resolved as shift
+    SEMICOLON       reduce using rule 8 (command -> ID .)
+    PIPE            reduce using rule 8 (command -> ID .)
+    REDIRECT_OUT    reduce using rule 8 (command -> ID .)
+    REDIRECT_IN     reduce using rule 8 (command -> ID .)
+    IF              reduce using rule 8 (command -> ID .)
+    FOR             reduce using rule 8 (command -> ID .)
+    $end            reduce using rule 8 (command -> ID .)
+    THEN            reduce using rule 8 (command -> ID .)
+    FI              reduce using rule 8 (command -> ID .)
+    ELSE            reduce using rule 8 (command -> ID .)
+    DONE            reduce using rule 8 (command -> ID .)
+    STRING          shift and go to state 17
+    NUMBER          shift and go to state 18
+    ID              shift and go to state 14
+
+  ! ID              [ reduce using rule 8 (command -> ID .) ]
+
+    argument_list                  shift and go to state 15
+    argument                       shift and go to state 16
+
+state 7
+
+    (17) if_statement -> IF . condition THEN statements FI
+    (18) if_statement -> IF . condition THEN statements ELSE statements FI
+    (19) condition -> . command
+    (7) command -> . ID argument_list
+    (8) command -> . ID
+    (9) command -> . command PIPE command
+    (10) command -> . command REDIRECT_OUT ID
+    (11) command -> . command REDIRECT_IN ID
+
+    ID              shift and go to state 6
+
+    condition                      shift and go to state 19
+    command                        shift and go to state 20
+
+state 8
+
+    (20) loop_statement -> FOR . ID IN argument_list DO statements DONE
+
+    ID              shift and go to state 21
+
+
+state 9
+
+    (2) statements -> statements statement .
+
+    ID              reduce using rule 2 (statements -> statements statement .)
+    IF              reduce using rule 2 (statements -> statements statement .)
+    FOR             reduce using rule 2 (statements -> statements statement .)
+    $end            reduce using rule 2 (statements -> statements statement .)
+    FI              reduce using rule 2 (statements -> statements statement .)
+    ELSE            reduce using rule 2 (statements -> statements statement .)
+    DONE            reduce using rule 2 (statements -> statements statement .)
+
+
+state 10
+
+    (3) statement -> command SEMICOLON .
+
+    ID              reduce using rule 3 (statement -> command SEMICOLON .)
+    IF              reduce using rule 3 (statement -> command SEMICOLON .)
+    FOR             reduce using rule 3 (statement -> command SEMICOLON .)
+    $end            reduce using rule 3 (statement -> command SEMICOLON .)
+    FI              reduce using rule 3 (statement -> command SEMICOLON .)
+    ELSE            reduce using rule 3 (statement -> command SEMICOLON .)
+    DONE            reduce using rule 3 (statement -> command SEMICOLON .)
+
+
+state 11
+
+    (9) command -> command PIPE . command
+    (7) command -> . ID argument_list
+    (8) command -> . ID
+    (9) command -> . command PIPE command
+    (10) command -> . command REDIRECT_OUT ID
+    (11) command -> . command REDIRECT_IN ID
+
+    ID              shift and go to state 6
+
+    command                        shift and go to state 22
+
+state 12
+
+    (10) command -> command REDIRECT_OUT . ID
+
+    ID              shift and go to state 23
+
+
+state 13
+
+    (11) command -> command REDIRECT_IN . ID
+
+    ID              shift and go to state 24
+
+
+state 14
+
+    (16) argument -> ID .
+
+    STRING          reduce using rule 16 (argument -> ID .)
+    NUMBER          reduce using rule 16 (argument -> ID .)
+    ID              reduce using rule 16 (argument -> ID .)
+    SEMICOLON       reduce using rule 16 (argument -> ID .)
+    PIPE            reduce using rule 16 (argument -> ID .)
+    REDIRECT_OUT    reduce using rule 16 (argument -> ID .)
+    REDIRECT_IN     reduce using rule 16 (argument -> ID .)
+    IF              reduce using rule 16 (argument -> ID .)
+    FOR             reduce using rule 16 (argument -> ID .)
+    $end            reduce using rule 16 (argument -> ID .)
+    THEN            reduce using rule 16 (argument -> ID .)
+    FI              reduce using rule 16 (argument -> ID .)
+    ELSE            reduce using rule 16 (argument -> ID .)
+    DONE            reduce using rule 16 (argument -> ID .)
+    DO              reduce using rule 16 (argument -> ID .)
+
+
+state 15
+
+    (7) command -> ID argument_list .
+    (12) argument_list -> argument_list . argument
+    (14) argument -> . STRING
+    (15) argument -> . NUMBER
+    (16) argument -> . ID
+
+  ! shift/reduce conflict for ID resolved as shift
+    SEMICOLON       reduce using rule 7 (command -> ID argument_list .)
+    PIPE            reduce using rule 7 (command -> ID argument_list .)
+    REDIRECT_OUT    reduce using rule 7 (command -> ID argument_list .)
+    REDIRECT_IN     reduce using rule 7 (command -> ID argument_list .)
+    IF              reduce using rule 7 (command -> ID argument_list .)
+    FOR             reduce using rule 7 (command -> ID argument_list .)
+    $end            reduce using rule 7 (command -> ID argument_list .)
+    THEN            reduce using rule 7 (command -> ID argument_list .)
+    FI              reduce using rule 7 (command -> ID argument_list .)
+    ELSE            reduce using rule 7 (command -> ID argument_list .)
+    DONE            reduce using rule 7 (command -> ID argument_list .)
+    STRING          shift and go to state 17
+    NUMBER          shift and go to state 18
+    ID              shift and go to state 14
+
+  ! ID              [ reduce using rule 7 (command -> ID argument_list .) ]
+
+    argument                       shift and go to state 25
+
+state 16
+
+    (13) argument_list -> argument .
+
+    STRING          reduce using rule 13 (argument_list -> argument .)
+    NUMBER          reduce using rule 13 (argument_list -> argument .)
+    ID              reduce using rule 13 (argument_list -> argument .)
+    SEMICOLON       reduce using rule 13 (argument_list -> argument .)
+    PIPE            reduce using rule 13 (argument_list -> argument .)
+    REDIRECT_OUT    reduce using rule 13 (argument_list -> argument .)
+    REDIRECT_IN     reduce using rule 13 (argument_list -> argument .)
+    IF              reduce using rule 13 (argument_list -> argument .)
+    FOR             reduce using rule 13 (argument_list -> argument .)
+    $end            reduce using rule 13 (argument_list -> argument .)
+    THEN            reduce using rule 13 (argument_list -> argument .)
+    FI              reduce using rule 13 (argument_list -> argument .)
+    ELSE            reduce using rule 13 (argument_list -> argument .)
+    DONE            reduce using rule 13 (argument_list -> argument .)
+    DO              reduce using rule 13 (argument_list -> argument .)
+
+
+state 17
+
+    (14) argument -> STRING .
+
+    STRING          reduce using rule 14 (argument -> STRING .)
+    NUMBER          reduce using rule 14 (argument -> STRING .)
+    ID              reduce using rule 14 (argument -> STRING .)
+    SEMICOLON       reduce using rule 14 (argument -> STRING .)
+    PIPE            reduce using rule 14 (argument -> STRING .)
+    REDIRECT_OUT    reduce using rule 14 (argument -> STRING .)
+    REDIRECT_IN     reduce using rule 14 (argument -> STRING .)
+    IF              reduce using rule 14 (argument -> STRING .)
+    FOR             reduce using rule 14 (argument -> STRING .)
+    $end            reduce using rule 14 (argument -> STRING .)
+    THEN            reduce using rule 14 (argument -> STRING .)
+    FI              reduce using rule 14 (argument -> STRING .)
+    ELSE            reduce using rule 14 (argument -> STRING .)
+    DONE            reduce using rule 14 (argument -> STRING .)
+    DO              reduce using rule 14 (argument -> STRING .)
+
+
+state 18
+
+    (15) argument -> NUMBER .
+
+    STRING          reduce using rule 15 (argument -> NUMBER .)
+    NUMBER          reduce using rule 15 (argument -> NUMBER .)
+    ID              reduce using rule 15 (argument -> NUMBER .)
+    SEMICOLON       reduce using rule 15 (argument -> NUMBER .)
+    PIPE            reduce using rule 15 (argument -> NUMBER .)
+    REDIRECT_OUT    reduce using rule 15 (argument -> NUMBER .)
+    REDIRECT_IN     reduce using rule 15 (argument -> NUMBER .)
+    IF              reduce using rule 15 (argument -> NUMBER .)
+    FOR             reduce using rule 15 (argument -> NUMBER .)
+    $end            reduce using rule 15 (argument -> NUMBER .)
+    THEN            reduce using rule 15 (argument -> NUMBER .)
+    FI              reduce using rule 15 (argument -> NUMBER .)
+    ELSE            reduce using rule 15 (argument -> NUMBER .)
+    DONE            reduce using rule 15 (argument -> NUMBER .)
+    DO              reduce using rule 15 (argument -> NUMBER .)
+
+
+state 19
+
+    (17) if_statement -> IF condition . THEN statements FI
+    (18) if_statement -> IF condition . THEN statements ELSE statements FI
+
+    THEN            shift and go to state 26
+
+
+state 20
+
+    (19) condition -> command .
+    (9) command -> command . PIPE command
+    (10) command -> command . REDIRECT_OUT ID
+    (11) command -> command . REDIRECT_IN ID
+
+    THEN            reduce using rule 19 (condition -> command .)
+    PIPE            shift and go to state 11
+    REDIRECT_OUT    shift and go to state 12
+    REDIRECT_IN     shift and go to state 13
+
+
+state 21
+
+    (20) loop_statement -> FOR ID . IN argument_list DO statements DONE
+
+    IN              shift and go to state 27
+
+
+state 22
+
+    (9) command -> command PIPE command .
+    (9) command -> command . PIPE command
+    (10) command -> command . REDIRECT_OUT ID
+    (11) command -> command . REDIRECT_IN ID
+
+  ! shift/reduce conflict for PIPE resolved as shift
+  ! shift/reduce conflict for REDIRECT_OUT resolved as shift
+  ! shift/reduce conflict for REDIRECT_IN resolved as shift
+    SEMICOLON       reduce using rule 9 (command -> command PIPE command .)
+    ID              reduce using rule 9 (command -> command PIPE command .)
+    IF              reduce using rule 9 (command -> command PIPE command .)
+    FOR             reduce using rule 9 (command -> command PIPE command .)
+    $end            reduce using rule 9 (command -> command PIPE command .)
+    THEN            reduce using rule 9 (command -> command PIPE command .)
+    FI              reduce using rule 9 (command -> command PIPE command .)
+    ELSE            reduce using rule 9 (command -> command PIPE command .)
+    DONE            reduce using rule 9 (command -> command PIPE command .)
+    PIPE            shift and go to state 11
+    REDIRECT_OUT    shift and go to state 12
+    REDIRECT_IN     shift and go to state 13
+
+  ! PIPE            [ reduce using rule 9 (command -> command PIPE command .) ]
+  ! REDIRECT_OUT    [ reduce using rule 9 (command -> command PIPE command .) ]
+  ! REDIRECT_IN     [ reduce using rule 9 (command -> command PIPE command .) ]
+
+
+state 23
+
+    (10) command -> command REDIRECT_OUT ID .
+
+    SEMICOLON       reduce using rule 10 (command -> command REDIRECT_OUT ID .)
+    PIPE            reduce using rule 10 (command -> command REDIRECT_OUT ID .)
+    REDIRECT_OUT    reduce using rule 10 (command -> command REDIRECT_OUT ID .)
+    REDIRECT_IN     reduce using rule 10 (command -> command REDIRECT_OUT ID .)
+    ID              reduce using rule 10 (command -> command REDIRECT_OUT ID .)
+    IF              reduce using rule 10 (command -> command REDIRECT_OUT ID .)
+    FOR             reduce using rule 10 (command -> command REDIRECT_OUT ID .)
+    $end            reduce using rule 10 (command -> command REDIRECT_OUT ID .)
+    THEN            reduce using rule 10 (command -> command REDIRECT_OUT ID .)
+    FI              reduce using rule 10 (command -> command REDIRECT_OUT ID .)
+    ELSE            reduce using rule 10 (command -> command REDIRECT_OUT ID .)
+    DONE            reduce using rule 10 (command -> command REDIRECT_OUT ID .)
+
+
+state 24
+
+    (11) command -> command REDIRECT_IN ID .
+
+    SEMICOLON       reduce using rule 11 (command -> command REDIRECT_IN ID .)
+    PIPE            reduce using rule 11 (command -> command REDIRECT_IN ID .)
+    REDIRECT_OUT    reduce using rule 11 (command -> command REDIRECT_IN ID .)
+    REDIRECT_IN     reduce using rule 11 (command -> command REDIRECT_IN ID .)
+    ID              reduce using rule 11 (command -> command REDIRECT_IN ID .)
+    IF              reduce using rule 11 (command -> command REDIRECT_IN ID .)
+    FOR             reduce using rule 11 (command -> command REDIRECT_IN ID .)
+    $end            reduce using rule 11 (command -> command REDIRECT_IN ID .)
+    THEN            reduce using rule 11 (command -> command REDIRECT_IN ID .)
+    FI              reduce using rule 11 (command -> command REDIRECT_IN ID .)
+    ELSE            reduce using rule 11 (command -> command REDIRECT_IN ID .)
+    DONE            reduce using rule 11 (command -> command REDIRECT_IN ID .)
+
+
+state 25
+
+    (12) argument_list -> argument_list argument .
+
+    STRING          reduce using rule 12 (argument_list -> argument_list argument .)
+    NUMBER          reduce using rule 12 (argument_list -> argument_list argument .)
+    ID              reduce using rule 12 (argument_list -> argument_list argument .)
+    SEMICOLON       reduce using rule 12 (argument_list -> argument_list argument .)
+    PIPE            reduce using rule 12 (argument_list -> argument_list argument .)
+    REDIRECT_OUT    reduce using rule 12 (argument_list -> argument_list argument .)
+    REDIRECT_IN     reduce using rule 12 (argument_list -> argument_list argument .)
+    IF              reduce using rule 12 (argument_list -> argument_list argument .)
+    FOR             reduce using rule 12 (argument_list -> argument_list argument .)
+    $end            reduce using rule 12 (argument_list -> argument_list argument .)
+    THEN            reduce using rule 12 (argument_list -> argument_list argument .)
+    FI              reduce using rule 12 (argument_list -> argument_list argument .)
+    ELSE            reduce using rule 12 (argument_list -> argument_list argument .)
+    DONE            reduce using rule 12 (argument_list -> argument_list argument .)
+    DO              reduce using rule 12 (argument_list -> argument_list argument .)
+
+
+state 26
+
+    (17) if_statement -> IF condition THEN . statements FI
+    (18) if_statement -> IF condition THEN . statements ELSE statements FI
+    (1) statements -> . statement
+    (2) statements -> . statements statement
+    (3) statement -> . command SEMICOLON
+    (4) statement -> . if_statement
+    (5) statement -> . loop_statement
+    (6) statement -> . command
+    (7) command -> . ID argument_list
+    (8) command -> . ID
+    (9) command -> . command PIPE command
+    (10) command -> . command REDIRECT_OUT ID
+    (11) command -> . command REDIRECT_IN ID
+    (17) if_statement -> . IF condition THEN statements FI
+    (18) if_statement -> . IF condition THEN statements ELSE statements FI
+    (20) loop_statement -> . FOR ID IN argument_list DO statements DONE
+
+    ID              shift and go to state 6
+    IF              shift and go to state 7
+    FOR             shift and go to state 8
+
+    statements                     shift and go to state 28
+    statement                      shift and go to state 2
+    command                        shift and go to state 3
+    if_statement                   shift and go to state 4
+    loop_statement                 shift and go to state 5
+
+state 27
+
+    (20) loop_statement -> FOR ID IN . argument_list DO statements DONE
+    (12) argument_list -> . argument_list argument
+    (13) argument_list -> . argument
+    (14) argument -> . STRING
+    (15) argument -> . NUMBER
+    (16) argument -> . ID
+
+    STRING          shift and go to state 17
+    NUMBER          shift and go to state 18
+    ID              shift and go to state 14
+
+    argument_list                  shift and go to state 29
+    argument                       shift and go to state 16
+
+state 28
+
+    (17) if_statement -> IF condition THEN statements . FI
+    (18) if_statement -> IF condition THEN statements . ELSE statements FI
+    (2) statements -> statements . statement
+    (3) statement -> . command SEMICOLON
+    (4) statement -> . if_statement
+    (5) statement -> . loop_statement
+    (6) statement -> . command
+    (7) command -> . ID argument_list
+    (8) command -> . ID
+    (9) command -> . command PIPE command
+    (10) command -> . command REDIRECT_OUT ID
+    (11) command -> . command REDIRECT_IN ID
+    (17) if_statement -> . IF condition THEN statements FI
+    (18) if_statement -> . IF condition THEN statements ELSE statements FI
+    (20) loop_statement -> . FOR ID IN argument_list DO statements DONE
+
+    FI              shift and go to state 30
+    ELSE            shift and go to state 31
+    ID              shift and go to state 6
+    IF              shift and go to state 7
+    FOR             shift and go to state 8
+
+    statement                      shift and go to state 9
+    command                        shift and go to state 3
+    if_statement                   shift and go to state 4
+    loop_statement                 shift and go to state 5
+
+state 29
+
+    (20) loop_statement -> FOR ID IN argument_list . DO statements DONE
+    (12) argument_list -> argument_list . argument
+    (14) argument -> . STRING
+    (15) argument -> . NUMBER
+    (16) argument -> . ID
+
+    DO              shift and go to state 32
+    STRING          shift and go to state 17
+    NUMBER          shift and go to state 18
+    ID              shift and go to state 14
+
+    argument                       shift and go to state 25
+
+state 30
+
+    (17) if_statement -> IF condition THEN statements FI .
+
+    ID              reduce using rule 17 (if_statement -> IF condition THEN statements FI .)
+    IF              reduce using rule 17 (if_statement -> IF condition THEN statements FI .)
+    FOR             reduce using rule 17 (if_statement -> IF condition THEN statements FI .)
+    $end            reduce using rule 17 (if_statement -> IF condition THEN statements FI .)
+    FI              reduce using rule 17 (if_statement -> IF condition THEN statements FI .)
+    ELSE            reduce using rule 17 (if_statement -> IF condition THEN statements FI .)
+    DONE            reduce using rule 17 (if_statement -> IF condition THEN statements FI .)
+
+
+state 31
+
+    (18) if_statement -> IF condition THEN statements ELSE . statements FI
+    (1) statements -> . statement
+    (2) statements -> . statements statement
+    (3) statement -> . command SEMICOLON
+    (4) statement -> . if_statement
+    (5) statement -> . loop_statement
+    (6) statement -> . command
+    (7) command -> . ID argument_list
+    (8) command -> . ID
+    (9) command -> . command PIPE command
+    (10) command -> . command REDIRECT_OUT ID
+    (11) command -> . command REDIRECT_IN ID
+    (17) if_statement -> . IF condition THEN statements FI
+    (18) if_statement -> . IF condition THEN statements ELSE statements FI
+    (20) loop_statement -> . FOR ID IN argument_list DO statements DONE
+
+    ID              shift and go to state 6
+    IF              shift and go to state 7
+    FOR             shift and go to state 8
+
+    statements                     shift and go to state 33
+    statement                      shift and go to state 2
+    command                        shift and go to state 3
+    if_statement                   shift and go to state 4
+    loop_statement                 shift and go to state 5
+
+state 32
+
+    (20) loop_statement -> FOR ID IN argument_list DO . statements DONE
+    (1) statements -> . statement
+    (2) statements -> . statements statement
+    (3) statement -> . command SEMICOLON
+    (4) statement -> . if_statement
+    (5) statement -> . loop_statement
+    (6) statement -> . command
+    (7) command -> . ID argument_list
+    (8) command -> . ID
+    (9) command -> . command PIPE command
+    (10) command -> . command REDIRECT_OUT ID
+    (11) command -> . command REDIRECT_IN ID
+    (17) if_statement -> . IF condition THEN statements FI
+    (18) if_statement -> . IF condition THEN statements ELSE statements FI
+    (20) loop_statement -> . FOR ID IN argument_list DO statements DONE
+
+    ID              shift and go to state 6
+    IF              shift and go to state 7
+    FOR             shift and go to state 8
+
+    statements                     shift and go to state 34
+    statement                      shift and go to state 2
+    command                        shift and go to state 3
+    if_statement                   shift and go to state 4
+    loop_statement                 shift and go to state 5
+
+state 33
+
+    (18) if_statement -> IF condition THEN statements ELSE statements . FI
+    (2) statements -> statements . statement
+    (3) statement -> . command SEMICOLON
+    (4) statement -> . if_statement
+    (5) statement -> . loop_statement
+    (6) statement -> . command
+    (7) command -> . ID argument_list
+    (8) command -> . ID
+    (9) command -> . command PIPE command
+    (10) command -> . command REDIRECT_OUT ID
+    (11) command -> . command REDIRECT_IN ID
+    (17) if_statement -> . IF condition THEN statements FI
+    (18) if_statement -> . IF condition THEN statements ELSE statements FI
+    (20) loop_statement -> . FOR ID IN argument_list DO statements DONE
+
+    FI              shift and go to state 35
+    ID              shift and go to state 6
+    IF              shift and go to state 7
+    FOR             shift and go to state 8
+
+    statement                      shift and go to state 9
+    command                        shift and go to state 3
+    if_statement                   shift and go to state 4
+    loop_statement                 shift and go to state 5
+
+state 34
+
+    (20) loop_statement -> FOR ID IN argument_list DO statements . DONE
+    (2) statements -> statements . statement
+    (3) statement -> . command SEMICOLON
+    (4) statement -> . if_statement
+    (5) statement -> . loop_statement
+    (6) statement -> . command
+    (7) command -> . ID argument_list
+    (8) command -> . ID
+    (9) command -> . command PIPE command
+    (10) command -> . command REDIRECT_OUT ID
+    (11) command -> . command REDIRECT_IN ID
+    (17) if_statement -> . IF condition THEN statements FI
+    (18) if_statement -> . IF condition THEN statements ELSE statements FI
+    (20) loop_statement -> . FOR ID IN argument_list DO statements DONE
+
+    DONE            shift and go to state 36
+    ID              shift and go to state 6
+    IF              shift and go to state 7
+    FOR             shift and go to state 8
+
+    statement                      shift and go to state 9
+    command                        shift and go to state 3
+    if_statement                   shift and go to state 4
+    loop_statement                 shift and go to state 5
+
+state 35
+
+    (18) if_statement -> IF condition THEN statements ELSE statements FI .
+
+    ID              reduce using rule 18 (if_statement -> IF condition THEN statements ELSE statements FI .)
+    IF              reduce using rule 18 (if_statement -> IF condition THEN statements ELSE statements FI .)
+    FOR             reduce using rule 18 (if_statement -> IF condition THEN statements ELSE statements FI .)
+    $end            reduce using rule 18 (if_statement -> IF condition THEN statements ELSE statements FI .)
+    FI              reduce using rule 18 (if_statement -> IF condition THEN statements ELSE statements FI .)
+    ELSE            reduce using rule 18 (if_statement -> IF condition THEN statements ELSE statements FI .)
+    DONE            reduce using rule 18 (if_statement -> IF condition THEN statements ELSE statements FI .)
+
+
+state 36
+
+    (20) loop_statement -> FOR ID IN argument_list DO statements DONE .
+
+    ID              reduce using rule 20 (loop_statement -> FOR ID IN argument_list DO statements DONE .)
+    IF              reduce using rule 20 (loop_statement -> FOR ID IN argument_list DO statements DONE .)
+    FOR             reduce using rule 20 (loop_statement -> FOR ID IN argument_list DO statements DONE .)
+    $end            reduce using rule 20 (loop_statement -> FOR ID IN argument_list DO statements DONE .)
+    FI              reduce using rule 20 (loop_statement -> FOR ID IN argument_list DO statements DONE .)
+    ELSE            reduce using rule 20 (loop_statement -> FOR ID IN argument_list DO statements DONE .)
+    DONE            reduce using rule 20 (loop_statement -> FOR ID IN argument_list DO statements DONE .)
+
+WARNING: 
+WARNING: Conflicts:
+WARNING: 
+WARNING: shift/reduce conflict for ID in state 6 resolved as shift
+WARNING: shift/reduce conflict for ID in state 15 resolved as shift
+WARNING: shift/reduce conflict for PIPE in state 22 resolved as shift
+WARNING: shift/reduce conflict for REDIRECT_OUT in state 22 resolved as shift
+WARNING: shift/reduce conflict for REDIRECT_IN in state 22 resolved as shift

@@ -6,7 +6,7 @@ def main():
     try:
         while True:
             data = input('shell> ')
-            if not data:
+            if not data.strip():
                 continue
             result = parser.parse(data, lexer=lexer)
             print("Parsed successfully!" if result is not None else "Parse error.")
