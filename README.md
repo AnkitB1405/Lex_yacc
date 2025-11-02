@@ -23,7 +23,6 @@ File Structure
 text
 .
 ├── lexer.sh
-
 ├── parser.sh
 ├── main.sh
 ├── setup.sh
