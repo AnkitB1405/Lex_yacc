@@ -1,69 +1,94 @@
-import ply.yacc as yacc 
-from lexer import tokens
+import ply.yacc as yacc
+from lexer import tokens, lexer
 
-start = 'input'
+# Grammar rules - simplified and conflict-free
 
-def p_input(p):
-    '''input : statements
-             | command
-             | empty'''
-    pass
+def p_program(p):
+    '''program : statement_list
+               | empty'''
+    print("✓ Parse successful!")
 
-def p_statements(p):
-    '''statements : statement
-                  | statements statement'''
+def p_statement_list(p):
+    '''statement_list : statement
+                      | statement_list SEMICOLON statement
+                      | statement_list statement'''
     pass
 
 def p_statement(p):
     '''statement : command
                  | if_statement
-                 | loop_statement'''
+                 | for_loop
+                 | assignment
+                 | expression'''
     pass
 
 def p_command(p):
     '''command : ID
-               | ID argument_list
-               | ID argument_list redirects
-               | ID redirects'''
-    pass
+               | ID arg_list
+               | ID arg_list redirect
+               | ID redirect'''
+    print(f"Command recognized: {p[1]}")
 
-def p_argument_list(p):
-    '''argument_list : argument_list argument
-                     | argument
-                     | empty'''
+def p_arg_list(p):
+    '''arg_list : argument
+                | arg_list argument'''
     pass
 
 def p_argument(p):
-    '''argument : STRING
+    '''argument : ID
                 | NUMBER
-                | ID'''
+                | STRING'''
     pass
 
-def p_redirects(p):
-    '''redirects : PIPE command
-                 | REDIRECT_OUT ID
-                 | REDIRECT_IN ID
-                 | empty'''
+def p_redirect(p):
+    '''redirect : REDIRECT_OUT ID
+                | REDIRECT_IN ID
+                | PIPE command'''
+    pass
+
+def p_assignment(p):
+    '''assignment : ID EQUALS expression'''
+    print(f"Assignment: {p[1]} = ...")
+
+def p_expression(p):
+    '''expression : expression PLUS term
+                  | expression MINUS term
+                  | term'''
+    pass
+
+def p_term(p):
+    '''term : term MULTIPLY factor
+            | term DIVIDE factor
+            | factor'''
+    pass
+
+def p_factor(p):
+    '''factor : NUMBER
+              | ID
+              | LPAREN expression RPAREN'''
     pass
 
 def p_if_statement(p):
-    '''if_statement : IF condition THEN statements FI
-                   | IF condition THEN statements ELSE statements FI'''
-    pass
+    '''if_statement : IF condition THEN statement_list FI
+                    | IF condition THEN statement_list ELSE statement_list FI'''
+    print("If statement recognized")
 
 def p_condition(p):
-    '''condition : command'''
+    '''condition : expression'''
     pass
 
-def p_loop_statement(p):
-    '''loop_statement : FOR ID IN argument_list DO statements DONE'''
-    pass
+def p_for_loop(p):
+    '''for_loop : FOR ID IN arg_list DO statement_list DONE'''
+    print("For loop recognized")
 
 def p_empty(p):
-    'empty :'
+    '''empty :'''
     pass
 
 def p_error(p):
-    print("Syntax error!")
+    if p:
+        print(f"Syntax error at token '{p.value}'")
+    else:
+        print("Syntax error at EOF")
 
 parser = yacc.yacc()

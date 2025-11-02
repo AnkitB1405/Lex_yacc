@@ -1,17 +1,20 @@
 from lexer import lexer
 from parser import parser
 
-def main():
-    print("Shell parser (type Ctrl+D or Ctrl+C to exit)")
+print("Shell Parser (type Ctrl+D or Ctrl+C to exit)")
+print("=" * 50)
+
+while True:
     try:
-        while True:
-            data = input('shell> ')
-            if not data.strip():
-                continue
-            result = parser.parse(data, lexer=lexer)
-            print("Parsed successfully!" if result is not None else "Parse error.")
+        data = input('shell> ')
     except (EOFError, KeyboardInterrupt):
         print("\nExiting.")
-
-if __name__ == "__main__":
-    main()
+        break
+    
+    if not data:
+        continue
+    
+    try:
+        result = parser.parse(data, lexer=lexer)
+    except Exception as e:
+        print(f"Error: {e}")
