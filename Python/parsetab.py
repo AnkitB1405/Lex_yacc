@@ -6,9 +6,9 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = 'DO DONE ELSE EQUAL FI FOR ID IF IN NUMBER PIPE REDIRECT_IN REDIRECT_OUT SEMICOLON STRING THEN WHILEstatements : statement\n| statements statementstatement : command SEMICOLON\n| if_statement\n| loop_statement\n| commandcommand : ID argument_list\n| ID\n| command PIPE command\n| command REDIRECT_OUT ID\n| command REDIRECT_IN IDargument_list : argument_list argument\n| argumentargument : STRING\n| NUMBER\n| IDif_statement : IF condition THEN statements FI\n| IF condition THEN statements ELSE statements FIcondition : commandloop_statement : FOR ID IN argument_list DO statements DONE'
+_lr_signature = 'inputDO DONE ELSE EQUAL FI FOR ID IF IN NUMBER PIPE REDIRECT_IN REDIRECT_OUT SEMICOLON STRING THEN WHILEinput : statements\n             | command\n             | emptystatements : statement\n                  | statements statementstatement : command\n                 | if_statement\n                 | loop_statementcommand : ID\n               | ID argument_list\n               | ID argument_list redirects\n               | ID redirectsargument_list : argument_list argument\n                     | argument\n                     | emptyargument : STRING\n                | NUMBER\n                | IDredirects : PIPE command\n                 | REDIRECT_OUT ID\n                 | REDIRECT_IN ID\n                 | emptyif_statement : IF condition THEN statements FI\n                   | IF condition THEN statements ELSE statements FIcondition : commandloop_statement : FOR ID IN argument_list DO statements DONEempty :'
     
-_lr_action_items = {'ID':([0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,],[6,6,-1,-6,-4,-5,14,6,21,-2,-3,6,23,24,-16,14,-13,-14,-15,-9,-10,-11,-12,6,14,6,14,-17,6,6,6,6,-18,-20,]),'IF':([0,1,2,3,4,5,6,9,10,14,15,16,17,18,22,23,24,25,26,28,30,31,32,33,34,35,36,],[7,7,-1,-6,-4,-5,-8,-2,-3,-16,-7,-13,-14,-15,-9,-10,-11,-12,7,7,-17,7,7,7,7,-18,-20,]),'FOR':([0,1,2,3,4,5,6,9,10,14,15,16,17,18,22,23,24,25,26,28,30,31,32,33,34,35,36,],[8,8,-1,-6,-4,-5,-8,-2,-3,-16,-7,-13,-14,-15,-9,-10,-11,-12,8,8,-17,8,8,8,8,-18,-20,]),'$end':([1,2,3,4,5,6,9,10,14,15,16,17,18,22,23,24,25,30,35,36,],[0,-1,-6,-4,-5,-8,-2,-3,-16,-7,-13,-14,-15,-9,-10,-11,-12,-17,-18,-20,]),'FI':([2,3,4,5,6,9,10,14,15,16,17,18,22,23,24,25,28,30,33,35,36,],[-1,-6,-4,-5,-8,-2,-3,-16,-7,-13,-14,-15,-9,-10,-11,-12,30,-17,35,-18,-20,]),'ELSE':([2,3,4,5,6,9,10,14,15,16,17,18,22,23,24,25,28,30,35,36,],[-1,-6,-4,-5,-8,-2,-3,-16,-7,-13,-14,-15,-9,-10,-11,-12,31,-17,-18,-20,]),'DONE':([2,3,4,5,6,9,10,14,15,16,17,18,22,23,24,25,30,34,35,36,],[-1,-6,-4,-5,-8,-2,-3,-16,-7,-13,-14,-15,-9,-10,-11,-12,-17,36,-18,-20,]),'SEMICOLON':([3,6,14,15,16,17,18,22,23,24,25,],[10,-8,-16,-7,-13,-14,-15,-9,-10,-11,-12,]),'PIPE':([3,6,14,15,16,17,18,20,22,23,24,25,],[11,-8,-16,-7,-13,-14,-15,11,11,-10,-11,-12,]),'REDIRECT_OUT':([3,6,14,15,16,17,18,20,22,23,24,25,],[12,-8,-16,-7,-13,-14,-15,12,12,-10,-11,-12,]),'REDIRECT_IN':([3,6,14,15,16,17,18,20,22,23,24,25,],[13,-8,-16,-7,-13,-14,-15,13,13,-10,-11,-12,]),'THEN':([6,14,15,16,17,18,19,20,22,23,24,25,],[-8,-16,-7,-13,-14,-15,26,-19,-9,-10,-11,-12,]),'STRING':([6,14,15,16,17,18,25,27,29,],[17,-16,17,-13,-14,-15,-12,17,17,]),'NUMBER':([6,14,15,16,17,18,25,27,29,],[18,-16,18,-13,-14,-15,-12,18,18,]),'DO':([14,16,17,18,25,29,],[-16,-13,-14,-15,-12,32,]),'IN':([21,],[27,]),}
+_lr_action_items = {'ID':([0,2,3,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,],[6,6,-6,-4,13,-7,-8,6,25,-5,-6,-18,13,-12,-14,-15,6,30,31,-16,-17,-11,-13,-22,-19,-20,-21,6,13,6,13,-15,-23,6,6,6,6,-24,-26,]),'$end':([0,1,2,3,4,5,6,7,8,11,12,13,14,15,16,17,21,22,26,27,28,29,30,31,37,42,43,],[-27,0,-1,-2,-3,-4,-9,-7,-8,-5,-6,-18,-10,-12,-14,-15,-16,-17,-11,-13,-22,-19,-20,-21,-23,-24,-26,]),'IF':([0,2,3,5,6,7,8,11,12,13,14,15,16,17,21,22,26,27,28,29,30,31,32,34,37,38,39,40,41,42,43,],[9,9,-6,-4,-9,-7,-8,-5,-6,-18,-10,-12,-14,-15,-16,-17,-11,-13,-22,-19,-20,-21,9,9,-23,9,9,9,9,-24,-26,]),'FOR':([0,2,3,5,6,7,8,11,12,13,14,15,16,17,21,22,26,27,28,29,30,31,32,34,37,38,39,40,41,42,43,],[10,10,-6,-4,-9,-7,-8,-5,-6,-18,-10,-12,-14,-15,-16,-17,-11,-13,-22,-19,-20,-21,10,10,-23,10,10,10,10,-24,-26,]),'FI':([5,6,7,8,11,12,13,14,15,16,17,21,22,26,27,28,29,30,31,34,37,40,42,43,],[-4,-9,-7,-8,-5,-6,-18,-10,-12,-14,-15,-16,-17,-11,-13,-22,-19,-20,-21,37,-23,42,-24,-26,]),'ELSE':([5,6,7,8,11,12,13,14,15,16,17,21,22,26,27,28,29,30,31,34,37,42,43,],[-4,-9,-7,-8,-5,-6,-18,-10,-12,-14,-15,-16,-17,-11,-13,-22,-19,-20,-21,38,-23,-24,-26,]),'DONE':([5,6,7,8,11,12,13,14,15,16,17,21,22,26,27,28,29,30,31,37,41,42,43,],[-4,-9,-7,-8,-5,-6,-18,-10,-12,-14,-15,-16,-17,-11,-13,-22,-19,-20,-21,-23,43,-24,-26,]),'THEN':([6,13,14,15,16,17,21,22,23,24,26,27,28,29,30,31,],[-9,-18,-10,-12,-14,-15,-16,-17,32,-25,-11,-13,-22,-19,-20,-21,]),'PIPE':([6,13,14,16,17,21,22,27,],[18,-18,18,-14,-15,-16,-17,-13,]),'REDIRECT_OUT':([6,13,14,16,17,21,22,27,],[19,-18,19,-14,-15,-16,-17,-13,]),'REDIRECT_IN':([6,13,14,16,17,21,22,27,],[20,-18,20,-14,-15,-16,-17,-13,]),'STRING':([6,13,14,16,17,21,22,27,33,35,36,],[21,-18,21,-14,-15,-16,-17,-13,21,21,-15,]),'NUMBER':([6,13,14,16,17,21,22,27,33,35,36,],[22,-18,22,-14,-15,-16,-17,-13,22,22,-15,]),'DO':([13,16,21,22,27,33,35,36,],[-18,-14,-16,-17,-13,-27,39,-15,]),'IN':([25,],[33,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -17,7 +17,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'statements':([0,26,31,32,],[1,28,33,34,]),'statement':([0,1,26,28,31,32,33,34,],[2,9,2,9,2,2,9,9,]),'command':([0,1,7,11,26,28,31,32,33,34,],[3,3,20,22,3,3,3,3,3,3,]),'if_statement':([0,1,26,28,31,32,33,34,],[4,4,4,4,4,4,4,4,]),'loop_statement':([0,1,26,28,31,32,33,34,],[5,5,5,5,5,5,5,5,]),'argument_list':([6,27,],[15,29,]),'argument':([6,15,27,29,],[16,25,16,25,]),'condition':([7,],[19,]),}
+_lr_goto_items = {'input':([0,],[1,]),'statements':([0,32,38,39,],[2,34,40,41,]),'command':([0,2,9,18,32,34,38,39,40,41,],[3,12,24,29,12,12,12,12,12,12,]),'empty':([0,6,14,33,],[4,17,28,36,]),'statement':([0,2,32,34,38,39,40,41,],[5,11,5,11,5,5,11,11,]),'if_statement':([0,2,32,34,38,39,40,41,],[7,7,7,7,7,7,7,7,]),'loop_statement':([0,2,32,34,38,39,40,41,],[8,8,8,8,8,8,8,8,]),'argument_list':([6,33,],[14,35,]),'redirects':([6,14,],[15,26,]),'argument':([6,14,33,35,],[16,27,16,27,]),'condition':([9,],[23,]),}
 
 _lr_goto = {}
 for _k, _v in _lr_goto_items.items():
@@ -26,25 +26,32 @@ for _k, _v in _lr_goto_items.items():
        _lr_goto[_x][_k] = _y
 del _lr_goto_items
 _lr_productions = [
-  ("S' -> statements","S'",1,None,None,None),
-  ('statements -> statement','statements',1,'p_statements','parser.py',5),
-  ('statements -> statements statement','statements',2,'p_statements','parser.py',6),
-  ('statement -> command SEMICOLON','statement',2,'p_statement','parser.py',10),
-  ('statement -> if_statement','statement',1,'p_statement','parser.py',11),
-  ('statement -> loop_statement','statement',1,'p_statement','parser.py',12),
-  ('statement -> command','statement',1,'p_statement','parser.py',13),
-  ('command -> ID argument_list','command',2,'p_command','parser.py',17),
-  ('command -> ID','command',1,'p_command','parser.py',18),
-  ('command -> command PIPE command','command',3,'p_command','parser.py',19),
-  ('command -> command REDIRECT_OUT ID','command',3,'p_command','parser.py',20),
-  ('command -> command REDIRECT_IN ID','command',3,'p_command','parser.py',21),
-  ('argument_list -> argument_list argument','argument_list',2,'p_argument_list','parser.py',25),
-  ('argument_list -> argument','argument_list',1,'p_argument_list','parser.py',26),
-  ('argument -> STRING','argument',1,'p_argument','parser.py',30),
-  ('argument -> NUMBER','argument',1,'p_argument','parser.py',31),
-  ('argument -> ID','argument',1,'p_argument','parser.py',32),
-  ('if_statement -> IF condition THEN statements FI','if_statement',5,'p_if_statement','parser.py',36),
-  ('if_statement -> IF condition THEN statements ELSE statements FI','if_statement',7,'p_if_statement','parser.py',37),
-  ('condition -> command','condition',1,'p_condition','parser.py',41),
-  ('loop_statement -> FOR ID IN argument_list DO statements DONE','loop_statement',7,'p_loop_statement','parser.py',45),
+  ("S' -> input","S'",1,None,None,None),
+  ('input -> statements','input',1,'p_input','parser.py',7),
+  ('input -> command','input',1,'p_input','parser.py',8),
+  ('input -> empty','input',1,'p_input','parser.py',9),
+  ('statements -> statement','statements',1,'p_statements','parser.py',13),
+  ('statements -> statements statement','statements',2,'p_statements','parser.py',14),
+  ('statement -> command','statement',1,'p_statement','parser.py',18),
+  ('statement -> if_statement','statement',1,'p_statement','parser.py',19),
+  ('statement -> loop_statement','statement',1,'p_statement','parser.py',20),
+  ('command -> ID','command',1,'p_command','parser.py',24),
+  ('command -> ID argument_list','command',2,'p_command','parser.py',25),
+  ('command -> ID argument_list redirects','command',3,'p_command','parser.py',26),
+  ('command -> ID redirects','command',2,'p_command','parser.py',27),
+  ('argument_list -> argument_list argument','argument_list',2,'p_argument_list','parser.py',31),
+  ('argument_list -> argument','argument_list',1,'p_argument_list','parser.py',32),
+  ('argument_list -> empty','argument_list',1,'p_argument_list','parser.py',33),
+  ('argument -> STRING','argument',1,'p_argument','parser.py',37),
+  ('argument -> NUMBER','argument',1,'p_argument','parser.py',38),
+  ('argument -> ID','argument',1,'p_argument','parser.py',39),
+  ('redirects -> PIPE command','redirects',2,'p_redirects','parser.py',43),
+  ('redirects -> REDIRECT_OUT ID','redirects',2,'p_redirects','parser.py',44),
+  ('redirects -> REDIRECT_IN ID','redirects',2,'p_redirects','parser.py',45),
+  ('redirects -> empty','redirects',1,'p_redirects','parser.py',46),
+  ('if_statement -> IF condition THEN statements FI','if_statement',5,'p_if_statement','parser.py',50),
+  ('if_statement -> IF condition THEN statements ELSE statements FI','if_statement',7,'p_if_statement','parser.py',51),
+  ('condition -> command','condition',1,'p_condition','parser.py',55),
+  ('loop_statement -> FOR ID IN argument_list DO statements DONE','loop_statement',7,'p_loop_statement','parser.py',59),
+  ('empty -> <empty>','empty',0,'p_empty','parser.py',63),
 ]
